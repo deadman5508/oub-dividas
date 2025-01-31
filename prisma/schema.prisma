@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// criar uma migration : npm prisma migrate dev
+
+model User{
+  id String @id @default(uuid())
+  name String
+  email String
+  password String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  stripe_customer_id String?
+
+
+  @@map("users")
+  subscriptions Subscription?
+  persona Persona[]
+
+  debt Debt[]
+}
+
+model Subscription{
+  id String @id
+  status String
+  priceId String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("subscriptions")
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
+}
+model Persona{
+  id String @id @default(uuid())
+  name String
+  status Boolean @default(true)
+  upvalue String?
+  dowvalue String?
+  cpf String?  
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("personas") 
+
+  user User @relation(fields: [user_id],references: [id])
+  user_id String
+
+  debts Debt[]
+  item Item[]
+}
+model Debt{
+  id String @id @default(uuid())
+  name String
+  vdate String?
+  vcard String?
+  cvccard String?
+  value String?
+  number String?
+  description String?
+  status Boolean @default(true)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("debts")
+
+  persona Persona @relation(fields: [persona_id], references: [id])
+  persona_id String
+
+  user User @relation(fields: [user_id],references: [id])
+  user_id String
+
+  item Item[]
+}
+model Item{
+  id String @id @default(uuid())
+  name String
+  value String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("items")
+  debt Debt @relation(fields: [debt_id], references: [id])
+  persona Persona @relation(fields: [persona_id], references: [id])
+  
+  persona_id String
+  debt_id String
+}
