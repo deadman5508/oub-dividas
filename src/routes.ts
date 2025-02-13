@@ -23,6 +23,8 @@ import { UpdateItemsController } from "./controllers/item/UpdateItemsController"
 import { DeleteItemsController } from "./controllers/item/DeleteItemsController";
 import { DeleteDebtsController } from "./controllers/debts/DeleteDebtsControler";
 import { DeletePersonaController } from "./controllers/personas/DeletePersonaController";
+import { ListDebtsSumController } from "./controllers/debts/ListDebtsSumController";
+import { ListSumItemsController } from "./controllers/personas/ListSumItemsController";
 
 
 const router = Router()
@@ -46,6 +48,7 @@ router.put('/persona',isAutheticated, new UpdatePersonaController().handle)
 router.get('/persona/check', isAutheticated, new CheckSubsController().handle)
 router.get('/persona/count',isAutheticated,new CountPersonaController().handle)
 router.get('/persona/detail',isAutheticated, new DetailPersonaController().handle)
+router.get('/persona/sum',isAutheticated, new ListSumItemsController().handle)
 router.delete('/persona/delete/:persona_id',isAutheticated,new DeletePersonaController().handle)
 
 //--rotas debitos
@@ -54,6 +57,7 @@ router.post('/debt',isAutheticated,new CreateDebtsController().handle)
 router.get('/debt/detail',isAutheticated,new DetailDebtController().handle)
 router.put('/debt',isAutheticated,new UpdateDebtController().handle)
 router.get("/debts",isAutheticated,new ListDebtsController().handle)
+router.get("/debts/sum",isAutheticated,new ListDebtsSumController().handle)
 router.get("/debts/all",isAutheticated,new ListDebtsController().handle)
 router.delete("/debt/delete/:debt_id",isAutheticated,new DeleteDebtsController().handle)
 

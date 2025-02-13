@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,88 +7,81 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// criar uma migration : npm prisma migrate dev
-
-model User{
-  id String @id @default(uuid())
-  name String
-  email String
-  password String
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+model User {
+  id                 String        @id @default(uuid())
+  name               String
+  email              String
+  password           String
+  created_at         DateTime?     @default(now())
+  updated_at         DateTime?     @default(now())
   stripe_customer_id String?
-
+  debt               Debt[]
+  persona            Persona[]
+  subscriptions      Subscription?
 
   @@map("users")
-  subscriptions Subscription?
-  persona Persona[]
-
-  debt Debt[]
 }
 
-model Subscription{
-  id String @id
-  status String
-  priceId String
+model Subscription {
+  id         String    @id
+  status     String
+  priceId    String
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
+  userId     String    @unique
+  user       User      @relation(fields: [userId], references: [id])
 
   @@map("subscriptions")
-  userId String @unique
-  user User @relation(fields: [userId], references: [id])
 }
-model Persona{
-  id String @id @default(uuid())
-  name String
-  status Boolean @default(true)
-  upvalue String?
-  dowvalue String?
-  cpf String?  
+
+model Persona {
+  id         String    @id @default(uuid())
+  name       String
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
+  user_id    String
+  cpf        String?
+  dowvalue   String?
+  upvalue    String?
+  status     Boolean   @default(true)
+  debts      Debt[]
+  item       Item[]
+  user       User      @relation(fields: [user_id], references: [id])
 
-  @@map("personas") 
-
-  user User @relation(fields: [user_id],references: [id])
-  user_id String
-
-  debts Debt[]
-  item Item[]
+  @@map("personas")
 }
-model Debt{
-  id String @id @default(uuid())
-  name String
-  vdate String?
-  vcard String?
-  cvccard String?
-  value String?
-  number String?
+
+model Debt {
+  id          String    @id @default(uuid())
+  name        String
+  value       String?
+  number      String?
   description String?
-  status Boolean @default(true)
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  status      Boolean   @default(true)
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @default(now())
+  persona_id  String
+  cvccard     String?
+  vcard       String?
+  vdate       String?
+  user_id     String
+  persona     Persona   @relation(fields: [persona_id], references: [id])
+  user        User      @relation(fields: [user_id], references: [id])
+  item        Item[]
 
   @@map("debts")
-
-  persona Persona @relation(fields: [persona_id], references: [id])
-  persona_id String
-
-  user User @relation(fields: [user_id],references: [id])
-  user_id String
-
-  item Item[]
 }
-model Item{
-  id String @id @default(uuid())
-  name String
-  value String
+
+model Item {
+  id         String    @id @default(uuid())
+  name       String
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
+  debt_id    String
+  persona_id String
+  value      Float?
+  debt       Debt      @relation(fields: [debt_id], references: [id])
+  persona    Persona   @relation(fields: [persona_id], references: [id])
 
   @@map("items")
-  debt Debt @relation(fields: [debt_id], references: [id])
-  persona Persona @relation(fields: [persona_id], references: [id])
-  
-  persona_id String
-  debt_id String
 }
