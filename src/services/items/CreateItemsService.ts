@@ -4,7 +4,7 @@ interface itemsRequest{
     persona_id:string
     debt_id:string
     name:string
-    value:string
+    value:number
 
 }
 class CreateItemsService{
@@ -14,10 +14,10 @@ class CreateItemsService{
         }
         const item = await prismaClient.item.create({
             data:{
-                name:name,
-                persona_id:persona_id,
-                value:value,
-                debt_id:debt_id,
+                name,
+                persona_id,
+                value,
+                debt_id
             }
         })
         return item

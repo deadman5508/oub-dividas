@@ -2,7 +2,7 @@ import prismaClient from "../../prisma"
 
 interface UpdateItemsRequest{
     name:string
-    value:string
+    value:number
     item_id:string
 }
 class UpdateItemsService{
@@ -12,8 +12,8 @@ class UpdateItemsService{
                 id:item_id
             },
             data:{
-                name:name,
-                value:value
+                name,
+                value
             }
         })
         return items
