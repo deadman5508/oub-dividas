@@ -63,7 +63,7 @@ router.delete("/debt/delete/:debt_id",isAutheticated,new DeleteDebtsController()
 
 //--rotas de items
 router.post('/item',isAutheticated,new CreateItemsController().handle)
-router.get('/items',isAutheticated,new ListItemsController().handle)
+router.get('/items/:debt_id',isAutheticated,new ListItemsController().handle)
 router.put('/item',isAutheticated,new UpdateItemsController().handle)
 router.delete('/item/delete/:item_id',isAutheticated,new DeleteItemsController().handle)
 
