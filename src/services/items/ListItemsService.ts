@@ -7,7 +7,7 @@ class ListItemsService{
     async execute({debt_id}:ListItemsRequest){
         const items= await prismaClient.item.findMany({
             where:{
-                debt_id:debt_id
+                debt_id,
             }
         })
         return items
