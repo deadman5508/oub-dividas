@@ -15,6 +15,10 @@ class ListItemsController {
             const listItems = new ListItemsService();
             const items = await listItems.execute({ debt_id });
 
+            if (items.length === 0) {
+                return response.status(404).json({ message: "Nenhum item encontrado para este debt_id." });
+            }
+
             return response.json(items);
         } catch (error) {
             console.error(" Erro ao listar itens:", error);
