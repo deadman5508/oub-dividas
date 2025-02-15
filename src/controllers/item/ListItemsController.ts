@@ -4,6 +4,7 @@ import { ListItemsService } from "../../services/items/ListItemsService";
 class ListItemsController {
     async handle(request:Request, response: Response) {
             const { debt_id } = request.params;
+            console.log("Recebendo requisição com debt_id:", debt_id);
             const listItems = new ListItemsService();
             const items = await listItems.execute({ 
                 debt_id 
