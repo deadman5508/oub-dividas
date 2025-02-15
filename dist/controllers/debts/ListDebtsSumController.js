@@ -8,26 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateItemsService = void 0;
-const prisma_1 = __importDefault(require("../../prisma"));
-class UpdateItemsService {
-    execute(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ item_id, name, value }) {
-            const items = yield prisma_1.default.item.update({
-                where: {
-                    id: item_id
-                },
-                data: {
-                    name,
-                    value
-                }
+exports.ListDebtsSumController = void 0;
+const ListDebtsSumService_1 = require("../../services/debts/ListDebtsSumService");
+class ListDebtsSumController {
+    handle(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const debt_id = request.query.debt_id; // Pegando debt_id da query
+            const listDebtsSumService = new ListDebtsSumService_1.ListDebtsSumService();
+            const debt = yield listDebtsSumService.execute({
+                debt_id
             });
-            return items;
+            return response.json(debt);
         });
     }
 }
-exports.UpdateItemsService = UpdateItemsService;
+exports.ListDebtsSumController = ListDebtsSumController;

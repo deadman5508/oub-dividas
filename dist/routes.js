@@ -23,6 +23,8 @@ const UpdateItemsController_1 = require("./controllers/item/UpdateItemsControlle
 const DeleteItemsController_1 = require("./controllers/item/DeleteItemsController");
 const DeleteDebtsControler_1 = require("./controllers/debts/DeleteDebtsControler");
 const DeletePersonaController_1 = require("./controllers/personas/DeletePersonaController");
+const ListDebtsSumController_1 = require("./controllers/debts/ListDebtsSumController");
+const ListSumItemsController_1 = require("./controllers/personas/ListSumItemsController");
 const router = (0, express_1.Router)();
 exports.router = router;
 // router.get('/teste', (req:Request, res:Response)=>{
@@ -40,16 +42,18 @@ router.put('/persona', isAuthenticated_1.isAutheticated, new UpdatePersonaContro
 router.get('/persona/check', isAuthenticated_1.isAutheticated, new ChekSubsController_1.CheckSubsController().handle);
 router.get('/persona/count', isAuthenticated_1.isAutheticated, new CountPersonaConstroller_1.CountPersonaController().handle);
 router.get('/persona/detail', isAuthenticated_1.isAutheticated, new DetailPersonaController_1.DetailPersonaController().handle);
+router.get('/persona/sum', isAuthenticated_1.isAutheticated, new ListSumItemsController_1.ListSumItemsController().handle);
 router.delete('/persona/delete/:persona_id', isAuthenticated_1.isAutheticated, new DeletePersonaController_1.DeletePersonaController().handle);
 //--rotas debitos
 router.post('/debt', isAuthenticated_1.isAutheticated, new CreateDebtsController_1.CreateDebtsController().handle);
 router.get('/debt/detail', isAuthenticated_1.isAutheticated, new DetailDebtController_1.DetailDebtController().handle);
 router.put('/debt', isAuthenticated_1.isAutheticated, new UpdateDebtController_1.UpdateDebtController().handle);
 router.get("/debts", isAuthenticated_1.isAutheticated, new ListDebtsController_1.ListDebtsController().handle);
+router.get("/debts/sum", isAuthenticated_1.isAutheticated, new ListDebtsSumController_1.ListDebtsSumController().handle);
 router.get("/debts/all", isAuthenticated_1.isAutheticated, new ListDebtsController_1.ListDebtsController().handle);
 router.delete("/debt/delete/:debt_id", isAuthenticated_1.isAutheticated, new DeleteDebtsControler_1.DeleteDebtsController().handle);
 //--rotas de items
 router.post('/item', isAuthenticated_1.isAutheticated, new CreateItemsController_1.CreateItemsController().handle);
-router.get('/items', isAuthenticated_1.isAutheticated, new ListItemsController_1.ListItemsController().handle);
+router.get('/items/:debt_id', isAuthenticated_1.isAutheticated, new ListItemsController_1.ListItemsController().handle);
 router.put('/item', isAuthenticated_1.isAutheticated, new UpdateItemsController_1.UpdateItemsController().handle);
 router.delete('/item/delete/:item_id', isAuthenticated_1.isAutheticated, new DeleteItemsController_1.DeleteItemsController().handle);

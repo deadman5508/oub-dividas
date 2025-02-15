@@ -19,8 +19,8 @@ class ListItemsService {
         return __awaiter(this, arguments, void 0, function* ({ debt_id }) {
             const items = yield prisma_1.default.item.findMany({
                 where: {
-                    debt_id: debt_id
-                }
+                    debt_id
+                },
             });
             return items;
         });

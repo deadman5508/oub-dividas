@@ -12,22 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateItemsService = void 0;
+exports.ListSumItemsService = void 0;
 const prisma_1 = __importDefault(require("../../prisma"));
-class UpdateItemsService {
+class ListSumItemsService {
     execute(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ item_id, name, value }) {
-            const items = yield prisma_1.default.item.update({
-                where: {
-                    id: item_id
+        return __awaiter(this, arguments, void 0, function* ({ persona_id }) {
+            // Busca o débito e calcula a soma diretamente no banco
+            const personaValue = yield prisma_1.default.debt.findUnique({
+                where: { id: persona_id },
+                include: {
+                    item: true, // Se precisar listar os itens
                 },
-                data: {
-                    name,
-                    value
-                }
             });
-            return items;
+            // Calcula a soma diretamente no Prisma
+            const total = yield prisma_1.default.item.aggregate({
+                where: { persona_id },
+                _sum: {
+                    value: true,
+                },
+            });
+            // Retorna os dados do débito com o total dos itens
+            return Object.assign(Object.assign({}, personaValue), { totalValue: total._sum.value || 0 });
         });
     }
 }
-exports.UpdateItemsService = UpdateItemsService;
+exports.ListSumItemsService = ListSumItemsService;

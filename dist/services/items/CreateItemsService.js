@@ -22,10 +22,10 @@ class CreateItemsService {
             }
             const item = yield prisma_1.default.item.create({
                 data: {
-                    name: name,
-                    persona_id: persona_id,
-                    value: value,
-                    debt_id: debt_id,
+                    name,
+                    persona_id,
+                    value,
+                    debt_id
                 }
             });
             return item;
